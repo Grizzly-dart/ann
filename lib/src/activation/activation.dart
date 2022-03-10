@@ -1,13 +1,13 @@
 import 'dart:math' as math;
 
 abstract class ActivationFunction {
-  static const sigmoid = Sigmoid();
-
   String get name;
 
   double compute(num input);
 
   double derivative(num input);
+
+  static const sigmoid = Sigmoid();
 }
 
 class Sigmoid implements ActivationFunction {

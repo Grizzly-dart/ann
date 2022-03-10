@@ -1,4 +1,4 @@
-import 'package:ann/ann.dart';
+import 'package:grizzly_ann/grizzly_ann.dart';
 
 export 'sequential.dart';
 

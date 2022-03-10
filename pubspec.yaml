@@ -1,5 +1,5 @@
-name: ann
-description: A starting point for Dart libraries or applications.
+name: grizzly_ann
+description: Artifical neural network library for Dart.
 # version: 1.0.0
 # homepage: https://www.example.com
 

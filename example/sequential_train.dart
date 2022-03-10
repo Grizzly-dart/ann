@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:ann/ann.dart';
+import 'package:grizzly_ann/grizzly_ann.dart';
 import 'package:grizzly_array/grizzly_array.dart';
 
 void main() {

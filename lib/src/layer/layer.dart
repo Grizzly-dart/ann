@@ -1,6 +1,6 @@
-import 'package:ann/ann.dart';
-import 'package:ann/src/activation/activation.dart';
-import 'package:ann/src/loss_function/loss_function.dart';
+import 'package:grizzly_ann/grizzly_ann.dart';
+import 'package:grizzly_ann/src/activation/activation.dart';
+import 'package:grizzly_ann/src/loss_function/loss_function.dart';
 import 'package:grizzly_array/grizzly_array.dart';
 
 abstract class Layer<InputType, OutputType> {
@@ -21,13 +21,16 @@ abstract class Layer1D implements Layer<Iterable<num>, Double1D> {
 
   int get outputSize;
 
+  @override
   Double1D compute(Iterable<num> input,
       {void Function(Double1D a) recordActivation});
 }
 
 class Dense implements Layer1D {
+  @override
   final int inputSize;
 
+  @override
   final int outputSize;
 
   final ActivationFunction activationFunction;
@@ -66,6 +69,7 @@ class Dense implements Layer1D {
     return out;
   }
 
+  @override
   UpdateResult calculateErrorLastLayer(Iterable<double> y,
       Iterable<double> yHat, Iterable<num> a, LossFunction lossFunction) {
     final error = lossFunction.derivative(y, yHat, a, activationFunction);
@@ -84,6 +88,7 @@ class Dense implements Layer1D {
     return UpdateResult(error, propagatedError);
   }
 
+  @override
   void updateWeights(
       Iterable<double> input, Iterable<double> error, double learningRate) {
     final weightDelta = Double1DView.own(input).matmulRow(error);

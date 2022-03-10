@@ -1,4 +1,4 @@
-import 'package:ann/ann.dart';
+import 'package:grizzly_ann/grizzly_ann.dart';
 import 'package:grizzly_array/grizzly_array.dart';
 
 abstract class LossFunction {
@@ -25,6 +25,7 @@ class MeanSquaredErrorLossFunction implements LossFunction {
     return ((Double1D.own(yHat) - Double1D.own(y))..squareSelf()).mean;
   }
 
+  @override
   Double1D derivative(Iterable<num> y, Iterable<double> yHat,
       Iterable<double> x, ActivationFunction activationFunction) {
     return (Double1DView.own(yHat) - Double1DView.own(y))
@@ -43,6 +44,7 @@ class MeanAbsoluteErrorLossFunction implements LossFunction {
     return ((Double1D.own(y) - Double1D.own(yDash))..abs()).mean;
   }
 
+  @override
   Double1D derivative(Iterable<num> y, Iterable<double> yDash,
       Iterable<double> x, ActivationFunction activationFunction) {
     throw UnimplementedError();
