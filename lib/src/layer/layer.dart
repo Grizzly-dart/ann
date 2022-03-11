@@ -1,7 +1,5 @@
 import 'package:grizzly_ann/grizzly_ann.dart';
-import 'package:grizzly_ann/src/activation/activation.dart';
-import 'package:grizzly_ann/src/loss_function/loss_function.dart';
-import 'package:grizzly_array/grizzly_array.dart';
+// TODO import 'package:grizzly_array/grizzly_array.dart';
 
 abstract class Layer<InputType, OutputType> {
   OutputType compute(InputType input,
@@ -16,14 +14,14 @@ abstract class Layer<InputType, OutputType> {
       Iterable<double> input, Iterable<double> error, double learningRate);
 }
 
-abstract class Layer1D implements Layer<Iterable<num>, Double1D> {
+abstract class Layer1D implements Layer<Iterable<num>, List<double>> {
   int get inputSize;
 
   int get outputSize;
 
   @override
-  Double1D compute(Iterable<num> input,
-      {void Function(Double1D a) recordActivation});
+  List<double> compute(Iterable<num> input,
+      {void Function(List<double> a) recordActivation});
 }
 
 class Dense implements Layer1D {
@@ -35,9 +33,9 @@ class Dense implements Layer1D {
 
   final ActivationFunction activationFunction;
 
-  final Double2D weights;
+  final List<List<double>> weights;
 
-  final Double1D bias;
+  final List<double> bias;
 
   final bool useBias;
 
@@ -45,16 +43,16 @@ class Dense implements Layer1D {
       {this.activationFunction = ActivationFunction.sigmoid,
       this.useBias = true})
       : weights = Double2D.sized(inputSize, outputSize),
-        bias = Double1D.sized(outputSize);
+        bias = List<double>.filled(outputSize, 0);
 
   @override
-  Double1D compute(Iterable<num> input,
-      {void Function(Double1D a) recordActivation}) {
+  List<double> compute(Iterable<num> input,
+      {void Function(List<double> a)? recordActivation}) {
     if (input.length != inputSize) {
       throw Exception('invalid input dimension');
     }
 
-    final Double1D out = Double1DView.own(input).matmul(weights)[0].clone();
+    final List<double> out = input.matmul(weights)[0];
 
     if (useBias) {
       out.addition(bias);
