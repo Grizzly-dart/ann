@@ -30,9 +30,10 @@ void main() {
     network.train(inputs[i], Double1D([y[i]]));
   }
 
+  /* // TODO Print weights
   for(final layer in network.layers) {
-    print(layer.);
-  }
+    // TODO print weights print(layer.);
+  }*/
 
   print(network.predict(inputs[0]));
   print(y[0]);

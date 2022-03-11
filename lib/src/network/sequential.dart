@@ -1,6 +1,5 @@
 import 'package:grizzly_ann/grizzly_ann.dart';
 import 'package:grizzly_ann/src/loss_function/loss_function.dart';
-import 'package:grizzly_ann/src/network/network.dart';
 import 'package:grizzly_array/grizzly_array.dart';
 
 class State {
