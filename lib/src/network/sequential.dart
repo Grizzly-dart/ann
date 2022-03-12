@@ -16,7 +16,7 @@ class SequentialNetwork<InputType, OutputType>
   @override
   Iterable<Layer> get layers => _layers;
 
-  double learningRate = 1;  // TODO
+  double learningRate = 1; // TODO
 
   @override
   void addLayer(Layer layer) {
@@ -50,8 +50,6 @@ class SequentialNetwork<InputType, OutputType>
       layerState.error = updateResult.error;
     }
 
-
-
     for (int i = 0; i < _layers.length; i++) {
       Layer layer = _layers[i];
       final layerState = states[i];
@@ -76,4 +74,5 @@ class SequentialNetwork<InputType, OutputType>
   }
 }
 
-class Sequential1DNetwork extends SequentialNetwork<Iterable<num>, List<double>> {}
+class Sequential1DNetwork
+    extends SequentialNetwork<Iterable<num>, List<double>> {}

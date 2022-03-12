@@ -1,4 +1,3 @@
-import 'package:grizzly/grizzly.dart';
 import 'package:grizzly_ann/grizzly_ann.dart';
 // TODO import 'package:grizzly_array/grizzly_array.dart';
 
@@ -9,10 +8,10 @@ abstract class Layer<InputType, OutputType> {
   UpdateResult calculateErrorLastLayer(OutputType y, OutputType yHat,
       Iterable<num> a, LossFunction lossFunction);
 
-  UpdateResult calculateError(Iterable<num> a, Iterable<double> error);
+  UpdateResult calculateError(Iterable<num> a, Iterable<num> error);
 
   void updateWeights(
-      Iterable<double> input, Iterable<double> error, double learningRate);
+      Iterable<num> input, Iterable<num> error, double learningRate);
 }
 
 abstract class Layer1D implements Layer<Iterable<num>, List<double>> {
@@ -43,7 +42,7 @@ class Dense implements Layer1D {
   Dense(this.inputSize, this.outputSize,
       {this.activationFunction = ActivationFunction.sigmoid,
       this.useBias = true})
-      : weights = Double2D.sized(inputSize, outputSize),
+      : weights = MatrixMaker.filled(inputSize, outputSize, 0.0),
         bias = List<double>.filled(outputSize, 0);
 
   @override
@@ -71,27 +70,25 @@ class Dense implements Layer1D {
       Iterable<double> yHat, Iterable<num> a, LossFunction lossFunction) {
     final error = lossFunction.derivative(y, yHat, a, activationFunction);
 
-    final propagatedError = weights.mapTo1D((Double1DView e) => e.dot(error));
+    final propagatedError = weights.matmultColVector(error);
 
     return UpdateResult(error, propagatedError);
   }
 
   @override
   UpdateResult calculateError(
-      Iterable<num> a, Iterable<double> prevPropagatedError) {
-    final error = Double1DView.own(prevPropagatedError) *
-        a.map(activationFunction.derivative);
-    final propagatedError = weights.mapTo1D((Double1DView e) => e.dot(error));
+      Iterable<num> a, Iterable<num> prevPropagatedError) {
+    final error = prevPropagatedError * a.map(activationFunction.derivative);
+    final propagatedError = weights.matmultColVector(error);
     return UpdateResult(error, propagatedError);
   }
 
   @override
   void updateWeights(
-      Iterable<double> input, Iterable<double> error, double learningRate) {
-    final weightDelta = Double1DView.own(input).matmulRow(error);
-    weights.subtract(weightDelta * learningRate);
-    bias.applyIndexed(
-        (value, index) => value - (learningRate * error.elementAt(index)));
+      Iterable<num> input, Iterable<num> error, double learningRate) {
+    final weightDelta = input.matmultRowVector(error);
+    weights.assignSubtraction(weightDelta * learningRate);
+    bias.assignSubtraction(error * learningRate);
   }
 }
 
