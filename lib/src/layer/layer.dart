@@ -1,3 +1,4 @@
+import 'package:grizzly/grizzly.dart';
 import 'package:grizzly_ann/grizzly_ann.dart';
 // TODO import 'package:grizzly_array/grizzly_array.dart';
 
@@ -52,17 +53,15 @@ class Dense implements Layer1D {
       throw Exception('invalid input dimension');
     }
 
-    final List<double> out = input.matmul(weights)[0];
+    final List<double> out = input.matmult(weights).cast<double>().toList();
 
     if (useBias) {
-      out.addition(bias);
+      out.assignAddition(bias);
     }
 
-    if (recordActivation != null) recordActivation(out.clone());
+    if (recordActivation != null) recordActivation(List.from(out));
 
-    if (activationFunction != null) {
-      out.apply(activationFunction.compute);
-    }
+    out.apply(activationFunction.compute);
 
     return out;
   }

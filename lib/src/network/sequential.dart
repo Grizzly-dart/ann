@@ -1,6 +1,5 @@
+import 'package:grizzly/grizzly.dart';
 import 'package:grizzly_ann/grizzly_ann.dart';
-import 'package:grizzly_ann/src/loss_function/loss_function.dart';
-import 'package:grizzly_array/grizzly_array.dart';
 
 class State {
   var input;
@@ -29,14 +28,14 @@ class SequentialNetwork<InputType, OutputType>
       {LossFunction lossFunction = LossFunction.meanSquaredError}) {
     dynamic nextInput = x;
 
-    final states = List<State>(layers.length);
+    final states = <State>[];
 
     for (int i = 0; i < _layers.length; i++) {
       Layer layer = _layers[i];
       final layerState = State()..input = nextInput;
       nextInput = layer.compute(nextInput,
           recordActivation: (a) => layerState.activation = a);
-      states[i] = layerState;
+      states.add(layerState);
     }
 
     UpdateResult updateResult = _layers.last.calculateErrorLastLayer(
@@ -77,4 +76,4 @@ class SequentialNetwork<InputType, OutputType>
   }
 }
 
-class Sequential1DNetwork extends SequentialNetwork<Iterable<num>, Double1D> {}
+class Sequential1DNetwork extends SequentialNetwork<Iterable<num>, List<double>> {}

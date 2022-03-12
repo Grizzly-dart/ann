@@ -1,13 +1,13 @@
+import 'package:grizzly/grizzly.dart';
 import 'package:grizzly_ann/grizzly_ann.dart';
-import 'package:grizzly_array/grizzly_array.dart';
 
 abstract class LossFunction {
   String get name;
 
   double compute(Iterable<num> y, Iterable<double> yDash);
 
-  Double1D derivative(Iterable<num> y, Iterable<double> yHat,
-      Iterable<double> x, ActivationFunction activationFunction);
+  Iterable<double> derivative(Iterable<num> y, Iterable<double> yHat,
+      Iterable<num> x, ActivationFunction activationFunction);
 
   static const meanSquaredError = MeanSquaredErrorLossFunction();
 
@@ -21,15 +21,13 @@ class MeanSquaredErrorLossFunction implements LossFunction {
   final String name = 'Mean squared error';
 
   @override
-  double compute(Iterable<num> y, Iterable<double> yHat) {
-    return ((Double1D.own(yHat) - Double1D.own(y))..squareSelf()).mean;
-  }
+  double compute(Iterable<num> y, Iterable<double> yHat) =>
+      (yHat - y).sqrt().mean;
 
   @override
-  Double1D derivative(Iterable<num> y, Iterable<double> yHat,
-      Iterable<double> x, ActivationFunction activationFunction) {
-    return (Double1DView.own(yHat) - Double1DView.own(y))
-      ..dot(x.map((e) => activationFunction.derivative(e)));
+  Iterable<double> derivative(Iterable<num> y, Iterable<double> yHat,
+      Iterable<num> x, ActivationFunction activationFunction) {
+    return (yHat - y) * x.map(activationFunction.derivative);
   }
 }
 
@@ -40,13 +38,12 @@ class MeanAbsoluteErrorLossFunction implements LossFunction {
   final String name = 'Mean squared error';
 
   @override
-  double compute(Iterable<num> y, Iterable<double> yDash) {
-    return ((Double1D.own(y) - Double1D.own(yDash))..abs()).mean;
-  }
+  double compute(Iterable<num> y, Iterable<double> yDash) =>
+      (yDash - y).abs().mean;
 
   @override
-  Double1D derivative(Iterable<num> y, Iterable<double> yDash,
-      Iterable<double> x, ActivationFunction activationFunction) {
+  Iterable<double> derivative(Iterable<num> y, Iterable<double> yDash,
+      Iterable<num> x, ActivationFunction activationFunction) {
     throw UnimplementedError();
   }
 }

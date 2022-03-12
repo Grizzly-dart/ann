@@ -3,6 +3,8 @@
 /// More dartdocs go here.
 library ann;
 
+export 'package:grizzly/grizzly.dart';
+
 export 'src/activation/activation.dart';
 export 'src/layer/layer.dart';
 export 'src/loss_function/loss_function.dart';

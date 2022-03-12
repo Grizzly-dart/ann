@@ -1,7 +1,7 @@
 import 'dart:math';
 
+import 'package:grizzly/grizzly.dart';
 import 'package:grizzly_ann/grizzly_ann.dart';
-import 'package:grizzly_array/grizzly_array.dart';
 
 void main() {
   final rand = Random(5);
