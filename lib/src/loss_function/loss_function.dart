@@ -21,13 +21,15 @@ class MeanSquaredErrorLossFunction implements LossFunction {
   final String name = 'Mean squared error';
 
   @override
-  double compute(Iterable<num> y, Iterable<double> yHat) =>
-      (yHat - y).sqrt().mean;
+  double compute(Iterable<num> y, Iterable<double> yHat) {
+    // TODO ((yHat - y) * (yHat - y)).sqrt().mean;
+    throw UnimplementedError();
+  }
 
   @override
   Iterable<double> derivative(Iterable<num> y, Iterable<double> yHat,
       Iterable<num> x, ActivationFunction activationFunction) {
-    return (yHat - y) * x.map(activationFunction.derivative);
+    return (y.toDoubles() - yHat) * x.map(activationFunction.derivative);
   }
 }
 

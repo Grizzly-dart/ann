@@ -6,12 +6,29 @@ abstract class ActivationFunction {
   double compute(num input);
 
   double derivative(num input);
+  
+  static const linear = LinearActivation();
 
-  static const sigmoid = Sigmoid();
+  static const sigmoid = SigmoidActivation();
 }
 
-class Sigmoid implements ActivationFunction {
-  const Sigmoid();
+class LinearActivation implements ActivationFunction {
+  const LinearActivation();
+
+  @override
+  final name = 'linear';
+
+  @override
+  double compute(num input) {
+    return input.toDouble();
+  }
+
+  @override
+  double derivative(num input) => 1;
+}
+
+class SigmoidActivation implements ActivationFunction {
+  const SigmoidActivation();
 
   @override
   final name = 'sigmoid';

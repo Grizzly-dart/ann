@@ -1,7 +1,11 @@
 import 'package:grizzly_ann/grizzly_ann.dart';
-// TODO import 'package:grizzly_array/grizzly_array.dart';
 
 abstract class Layer<InputType, OutputType> {
+  ActivationFunction get activationFunction;
+
+  dynamic get weights;
+  dynamic get bias;
+
   OutputType compute(InputType input,
       {void Function(OutputType a) recordActivation});
 
@@ -33,6 +37,7 @@ class Dense implements Layer1D {
 
   final ActivationFunction activationFunction;
 
+  @override
   final List<List<double>> weights;
 
   final List<double> bias;
@@ -40,7 +45,7 @@ class Dense implements Layer1D {
   final bool useBias;
 
   Dense(this.inputSize, this.outputSize,
-      {this.activationFunction = ActivationFunction.sigmoid,
+      {this.activationFunction = ActivationFunction.linear,
       this.useBias = true})
       : weights = MatrixMaker.filled(inputSize, outputSize, 0.0),
         bias = List<double>.filled(outputSize, 0);
@@ -87,8 +92,8 @@ class Dense implements Layer1D {
   void updateWeights(
       Iterable<num> input, Iterable<num> error, double learningRate) {
     final weightDelta = input.matmultRowVector(error);
-    weights.assignSubtraction(weightDelta * learningRate);
-    bias.assignSubtraction(error * learningRate);
+    weights.assignAddition(weightDelta * learningRate);
+    bias.assignAddition(error * learningRate);
   }
 }
 

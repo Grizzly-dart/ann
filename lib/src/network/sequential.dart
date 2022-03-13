@@ -14,9 +14,11 @@ class SequentialNetwork<InputType, OutputType>
   final _layers = <Layer>[];
 
   @override
-  Iterable<Layer> get layers => _layers;
+  List<Layer> get layers => _layers.toList();
 
-  double learningRate = 1; // TODO
+  double learningRate; // TODO
+
+  SequentialNetwork({this.learningRate = 1e-3});
 
   @override
   void addLayer(Layer layer) {
@@ -75,4 +77,7 @@ class SequentialNetwork<InputType, OutputType>
 }
 
 class Sequential1DNetwork
-    extends SequentialNetwork<Iterable<num>, List<double>> {}
+    extends SequentialNetwork<Iterable<num>, List<double>> {
+  Sequential1DNetwork({double learningRate = 1e-3})
+      : super(learningRate: learningRate);
+}
