@@ -45,7 +45,7 @@ class Dense implements Layer1D {
   final bool useBias;
 
   Dense(this.inputSize, this.outputSize,
-      {this.activationFunction = ActivationFunction.linear,
+      {this.activationFunction = ActivationFunction.identity,
       this.useBias = true})
       : weights = MatrixMaker.filled(inputSize, outputSize, 0.0),
         bias = List<double>.filled(outputSize, 0);
