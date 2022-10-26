@@ -47,7 +47,7 @@ class Dense implements Layer1D {
   Dense(this.inputSize, this.outputSize,
       {this.activationFunction = ActivationFunction.identity,
       this.useBias = true})
-      : weights = MatrixMaker.filled(inputSize, outputSize, 0.0),
+      : weights = Mat.sized(inputSize, outputSize, 0.0),
         bias = List<double>.filled(outputSize, 0);
 
   @override

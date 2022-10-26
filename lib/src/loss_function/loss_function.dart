@@ -29,7 +29,7 @@ class MeanSquaredErrorLossFunction implements LossFunction {
   @override
   Iterable<double> derivative(Iterable<num> y, Iterable<double> yHat,
       Iterable<num> x, ActivationFunction activationFunction) {
-    return (y.toDoubles() - yHat) * x.map(activationFunction.derivative);
+    return (y.doubles() - yHat) * x.map(activationFunction.derivative);
   }
 }
 
